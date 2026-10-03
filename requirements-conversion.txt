@@ -1,0 +1,4 @@
+tensorflow-cpu==2.16.1
+numpy==1.26.4
+tf2onnx==1.16.1
+onnxruntime==1.18.1
