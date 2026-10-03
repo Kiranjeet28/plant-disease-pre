@@ -30,6 +30,7 @@ app.add_middleware(
         "http://localhost:3000",
         "http://localhost:5173",
         "https://plant-disease-pre.onrender.com",
+        "https://plant-disease-pre.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
