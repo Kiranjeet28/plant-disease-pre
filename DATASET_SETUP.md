@@ -145,6 +145,35 @@ inventing metrics. Metric helpers support accuracy, macro/weighted F1,
 per-class precision/recall/F1, confusion matrices, top-k accuracy, and
 repeatable warm-up-excluded latency measurements.
 
+## Model adapters (Step 8)
+
+The adapter interface is implemented in
+`scripts/model_adapters.py`. The verified ready adapter is
+`plantvillage-efficientnetb0-onnx`, backed by
+`model/plant_disease.onnx`, with 224×224 RGB input, raw float32 pixel values,
+38 probability outputs, and the exact source labels from `app/labels.json`.
+Each source label is checked against the verified PlantVillage canonical
+registry before inference.
+
+The Keras checkpoint is marked `requires_review` because no machine-readable
+adapter configuration and calibration artifact are available. The MobileNet
+PyTorch checkpoint is marked unavailable because its framework, output mapping,
+and preprocessing metadata are not verified. These models are not exposed as
+production-ready.
+
+Adapters return raw scores separately from calibrated probabilities,
+canonical mapping, calibration status, abstention status, image-quality
+warnings, and inference duration. Step 7 calibration is not applied to the
+ONNX probability output because the available calibration method is
+logit-based and no compatible artifact exists. No inference router is added in
+Step 8.
+
+Run adapter tests with:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest tests.test_model_adapters -v
+```
+
 ## Confidence calibration and uncertainty (Step 7)
 
 Calibration is implemented separately from production inference and uses
