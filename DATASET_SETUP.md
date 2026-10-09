@@ -79,6 +79,31 @@ verified PlantVillage labels already present in `app/labels.json`. PlantDoc
 has no local class labels in this checkout, so it remains documented as
 unresolved and is not fabricated into the registry.
 
+## End-to-end integration checks (Step 11)
+
+The integration suite exercises the upload endpoint, router response contract,
+canonical registry lookups, healthy and diseased result states, abstention and
+image-quality warnings, unsupported crops, upload limits, and model/service
+failure responses. It uses a small generated image fixture and controlled
+adapter responses; it does not require local datasets or model downloads.
+
+Run it with:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest tests.test_end_to_end_integration -v
+```
+
+Run all backend regression and integration tests with:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p "test_*.py" -v
+```
+
+The real-model integration case verifies that any returned canonical ID,
+display label, and healthy status agree with the canonical registry. A
+synthetic solid-colour image is only an execution fixture; its model output
+must not be interpreted as a validated plant disease or healthy-leaf example.
+
 ## Safe dataset splits (Step 4)
 
 Create reference-only manifests without copying or modifying source images:
