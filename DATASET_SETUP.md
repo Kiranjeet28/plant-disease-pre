@@ -126,3 +126,21 @@ request verified Keras ImageNet weights with `--pretrained`; this may download
 weights and should not be used until the dataset prerequisite is available.
 The current checkout has zero eligible samples, so no training run or metrics
 were produced. The existing ONNX production model remains untouched.
+
+## Benchmarking and evaluation (Step 6)
+
+Benchmarking evaluates only the verified Step 4 test partition and does not
+train, calibrate, or modify models:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\benchmark_models.py `
+  --manifest .\data\manifests\split_manifest.csv `
+  --report-dir .\reports
+```
+
+The command writes `benchmark_summary.json`, `model_comparison.csv`,
+`per_class_metrics.csv`, and `latency_benchmark.json`. With the current empty
+test manifest it records the baseline and candidates as skipped rather than
+inventing metrics. Metric helpers support accuracy, macro/weighted F1,
+per-class precision/recall/F1, confusion matrices, top-k accuracy, and
+repeatable warm-up-excluded latency measurements.

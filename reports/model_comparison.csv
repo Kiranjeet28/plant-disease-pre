@@ -1,0 +1,2 @@
+model,status,reason,sample_count,accuracy,macro_f1,weighted_f1
+production_onnx_and_candidates,skipped,Verified test manifest contains no samples.,0,,,

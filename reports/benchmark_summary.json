@@ -1,0 +1,20 @@
+{
+  "benchmark_schema_version": 1,
+  "evaluation_partition": "test",
+  "manifest": "data\\manifests\\split_manifest.csv",
+  "models": [
+    {
+      "model": "production_onnx_and_candidates",
+      "status": "skipped",
+      "reason": "Verified test manifest contains no samples.",
+      "sample_count": 0,
+      "accuracy": null,
+      "macro_f1": null,
+      "weighted_f1": null
+    }
+  ],
+  "limitations": [
+    "Verified test manifest contains no samples."
+  ],
+  "test_sample_count": 0
+}
