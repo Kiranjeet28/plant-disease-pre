@@ -1,0 +1,14 @@
+{
+  "calibration_schema_version": 1,
+  "status": "unavailable",
+  "method": "temperature_scaling",
+  "calibration_partition": "validation",
+  "metrics_before": null,
+  "metrics_after": null,
+  "abstention": null,
+  "reason": "Validation manifest contains no samples.",
+  "limitations": [
+    "No validation predictions or compatible logits are available.",
+    "OOD performance is not established without in-distribution and OOD examples."
+  ]
+}

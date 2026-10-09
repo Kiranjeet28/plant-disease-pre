@@ -144,3 +144,22 @@ test manifest it records the baseline and candidates as skipped rather than
 inventing metrics. Metric helpers support accuracy, macro/weighted F1,
 per-class precision/recall/F1, confusion matrices, top-k accuracy, and
 repeatable warm-up-excluded latency measurements.
+
+## Confidence calibration and uncertainty (Step 7)
+
+Calibration is implemented separately from production inference and uses
+validation predictions only. It supports temperature scaling for verified
+logits, NLL, Brier score, ECE, reliability data, validation-derived
+abstention thresholds, and conservative image-quality checks:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\calibrate_models.py `
+  --manifest .\data\manifests\split_manifest.csv `
+  --output-dir .\reports
+```
+
+With the current empty validation manifest, the command writes explicit
+`unavailable` calibration, abstention, OOD, and reliability reports. It does
+not infer predictions, fit parameters, modify model weights, change the
+prediction API, or claim OOD performance. Calibration artifacts are stored
+separately and include the model class ordering when fitting is later enabled.
