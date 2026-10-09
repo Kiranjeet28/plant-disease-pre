@@ -4,5 +4,6 @@ python-multipart
 pillow
 numpy
 onnxruntime
+tensorflow-cpu==2.16.1
 torch>=2.2,<3
 torchvision>=0.17,<1
