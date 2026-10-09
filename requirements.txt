@@ -5,3 +5,5 @@ pillow
 numpy==1.26.4
 onnxruntime==1.18.1
 tensorflow-cpu==2.16.1
+torch==2.2.2
+torchvision==0.17.2
