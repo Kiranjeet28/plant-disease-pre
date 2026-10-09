@@ -1,0 +1,19 @@
+{
+  "dataset_root": "",
+  "image_extensions": [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".bmp",
+    ".gif",
+    ".webp",
+    ".tif",
+    ".tiff"
+  ],
+  "seed": 20261009,
+  "train_ratio": 0.70,
+  "validation_ratio": 0.15,
+  "test_ratio": 0.15,
+  "expected_layout": "dataset_root/<exact class name>/<image files>",
+  "labels_file": "app/labels.json"
+}
