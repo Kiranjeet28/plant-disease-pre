@@ -1,0 +1,57 @@
+{
+  "registry_name": "plant_disease_canonical_registry",
+  "registry_version": "1.0.0",
+  "updated_at": "2026-10-09",
+  "schema": {
+    "required_columns": [
+      "canonical_id",
+      "crop",
+      "disease",
+      "is_healthy",
+      "source_dataset",
+      "source_label",
+      "synonyms",
+      "review_status"
+    ],
+    "allowed_review_statuses": [
+      "verified",
+      "unreviewed",
+      "unresolved"
+    ],
+    "allowed_source_datasets": [
+      "PlantVillage",
+      "PlantDoc"
+    ]
+  },
+  "sources": {
+    "PlantVillage": {
+      "url": "https://huggingface.co/datasets/mohanty/PlantVillage",
+      "revision": "9e97599868962bd0079b8db4b7f1efa9185fa1e7",
+      "evidence": [
+        "Hugging Face dataset metadata features label, crop, disease, and leaf_id.",
+        "The exact 38 labels match app/labels.json and MODEL_INFO.md."
+      ],
+      "local_audit_status": "not_available"
+    },
+    "PlantDoc": {
+      "url": "https://github.com/pratikkayal/PlantDoc-Dataset",
+      "revision": "5467f6012d78d1c446145d5f582da6096f852ae8",
+      "task": "cropped image classification",
+      "object_detection_repository": "https://github.com/pratikkayal/PlantDoc-Object-Detection-Dataset",
+      "local_audit_status": "not_available",
+      "mapping_status": "unresolved",
+      "reason": "No local PlantDoc class manifest or images were available; no PlantDoc labels are fabricated in the registry."
+    }
+  },
+  "mapping_policy": [
+    "Source labels are preserved exactly.",
+    "Healthy is represented as disease=healthy and is_healthy=true.",
+    "Identically named diseases remain crop-specific canonical identities.",
+    "PlantDoc classification labels and object-detection annotations are not interchangeable.",
+    "Unknown source labels must return an unresolved result rather than a fallback mapping."
+  ],
+  "unresolved_questions": [
+    "Provide a local PlantDoc classification root and rerun Step 2 before adding PlantDoc rows.",
+    "Review any future cross-dataset many-to-one mappings before changing review_status to verified."
+  ]
+}

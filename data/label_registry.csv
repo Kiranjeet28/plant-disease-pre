@@ -1,0 +1,39 @@
+canonical_id,crop,disease,is_healthy,source_dataset,source_label,synonyms,review_status
+apple.apple_scab,Apple,Apple scab,false,PlantVillage,Apple___Apple_scab,,verified
+apple.black_rot,Apple,Black rot,false,PlantVillage,Apple___Black_rot,,verified
+apple.cedar_apple_rust,Apple,Cedar apple rust,false,PlantVillage,Apple___Cedar_apple_rust,,verified
+apple.healthy,Apple,healthy,true,PlantVillage,Apple___healthy,,verified
+blueberry.healthy,Blueberry,healthy,true,PlantVillage,Blueberry___healthy,,verified
+cherry_including_sour.powdery_mildew,Cherry (including sour),Powdery mildew,false,PlantVillage,Cherry_(including_sour)___Powdery_mildew,,verified
+cherry_including_sour.healthy,Cherry (including sour),healthy,true,PlantVillage,Cherry_(including_sour)___healthy,,verified
+corn_maize.cercospora_leaf_spot_gray_leaf_spot,Corn (maize),Cercospora leaf spot Gray leaf spot,false,PlantVillage,Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot,,verified
+corn_maize.common_rust,Corn (maize),Common rust,false,PlantVillage,Corn_(maize)___Common_rust_,,verified
+corn_maize.northern_leaf_blight,Corn (maize),Northern Leaf Blight,false,PlantVillage,Corn_(maize)___Northern_Leaf_Blight,,verified
+corn_maize.healthy,Corn (maize),healthy,true,PlantVillage,Corn_(maize)___healthy,,verified
+grape.black_rot,Grape,Black rot,false,PlantVillage,Grape___Black_rot,,verified
+grape.esca_black_measles,Grape,Esca (Black Measles),false,PlantVillage,Grape___Esca_(Black_Measles),,verified
+grape.leaf_blight_isariopsis_leaf_spot,Grape,Leaf blight (Isariopsis Leaf Spot),false,PlantVillage,Grape___Leaf_blight_(Isariopsis_Leaf_Spot),,verified
+grape.healthy,Grape,healthy,true,PlantVillage,Grape___healthy,,verified
+orange.haunglongbing_citrus_greening,Orange,Haunglongbing (Citrus greening),false,PlantVillage,Orange___Haunglongbing_(Citrus_greening),,verified
+peach.bacterial_spot,Peach,Bacterial spot,false,PlantVillage,Peach___Bacterial_spot,,verified
+peach.healthy,Peach,healthy,true,PlantVillage,Peach___healthy,,verified
+pepper_bell.bacterial_spot,Pepper bell,Bacterial spot,false,PlantVillage,"Pepper,_bell___Bacterial_spot",,verified
+pepper_bell.healthy,Pepper bell,healthy,true,PlantVillage,"Pepper,_bell___healthy",,verified
+potato.early_blight,Potato,Early blight,false,PlantVillage,Potato___Early_blight,,verified
+potato.late_blight,Potato,Late blight,false,PlantVillage,Potato___Late_blight,,verified
+potato.healthy,Potato,healthy,true,PlantVillage,Potato___healthy,,verified
+raspberry.healthy,Raspberry,healthy,true,PlantVillage,Raspberry___healthy,,verified
+soybean.healthy,Soybean,healthy,true,PlantVillage,Soybean___healthy,,verified
+squash.powdery_mildew,Squash,Powdery mildew,false,PlantVillage,Squash___Powdery_mildew,,verified
+strawberry.leaf_scorch,Strawberry,Leaf scorch,false,PlantVillage,Strawberry___Leaf_scorch,,verified
+strawberry.healthy,Strawberry,healthy,true,PlantVillage,Strawberry___healthy,,verified
+tomato.bacterial_spot,Tomato,Bacterial spot,false,PlantVillage,Tomato___Bacterial_spot,,verified
+tomato.early_blight,Tomato,Early blight,false,PlantVillage,Tomato___Early_blight,,verified
+tomato.late_blight,Tomato,Late blight,false,PlantVillage,Tomato___Late_blight,,verified
+tomato.leaf_mold,Tomato,Leaf Mold,false,PlantVillage,Tomato___Leaf_Mold,,verified
+tomato.septoria_leaf_spot,Tomato,Septoria leaf spot,false,PlantVillage,Tomato___Septoria_leaf_spot,,verified
+tomato.spider_mites_two_spotted_spider_mite,Tomato,Spider mites Two-spotted spider mite,false,PlantVillage,Tomato___Spider_mites Two-spotted_spider_mite,,verified
+tomato.target_spot,Tomato,Target Spot,false,PlantVillage,Tomato___Target_Spot,,verified
+tomato.tomato_yellow_leaf_curl_virus,Tomato,Tomato Yellow Leaf Curl Virus,false,PlantVillage,Tomato___Tomato_Yellow_Leaf_Curl_Virus,,verified
+tomato.tomato_mosaic_virus,Tomato,Tomato mosaic virus,false,PlantVillage,Tomato___Tomato_mosaic_virus,,verified
+tomato.healthy,Tomato,healthy,true,PlantVillage,Tomato___healthy,,verified

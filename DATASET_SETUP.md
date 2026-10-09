@@ -61,3 +61,20 @@ CSV summaries, image integrity issues, SHA-256 duplicate groups, and
 conservative average-hash candidates that require manual review. PlantDoc
 classification folders and object-detection annotations are reported
 separately and must not be treated as interchangeable.
+
+## Canonical disease registry (Step 3)
+
+The versioned registry is stored in
+`data/label_registry.csv`, with schema and provenance in
+`data/label_registry_metadata.json`. Validate it without loading the model:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\label_registry.py
+```
+
+The command exits with status `0` when the registry is valid and status `2`
+when errors prevent safe use. Lookup helpers are available from
+`scripts.label_registry`. The current registry contains only the 38 exact,
+verified PlantVillage labels already present in `app/labels.json`. PlantDoc
+has no local class labels in this checkout, so it remains documented as
+unresolved and is not fabricated into the registry.
