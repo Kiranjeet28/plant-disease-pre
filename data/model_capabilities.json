@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "models": [
+    {
+      "model_id": "plantvillage-efficientnetb0-onnx",
+      "adapter_type": "onnx",
+      "status": "ready",
+      "checkpoint": "model/plant_disease.onnx",
+      "source_dataset": "PlantVillage",
+      "supported_crops": [
+        "Apple",
+        "Blueberry",
+        "Cherry (including sour)",
+        "Corn (maize)",
+        "Grape",
+        "Orange",
+        "Peach",
+        "Pepper bell",
+        "Potato",
+        "Raspberry",
+        "Soybean",
+        "Squash",
+        "Strawberry",
+        "Tomato"
+      ],
+      "calibration_status": "not_calibrated",
+      "abstention_status": "unavailable",
+      "benchmark_status": "unavailable",
+      "limitations": [
+        "PlantDoc field-domain capability is not verified.",
+        "Validation-derived calibration and abstention artifacts are unavailable."
+      ]
+    },
+    {
+      "model_id": "plantvillage-efficientnetb0-keras",
+      "adapter_type": "keras",
+      "status": "requires_review",
+      "source_dataset": "PlantVillage",
+      "supported_crops": [],
+      "calibration_status": "unavailable",
+      "abstention_status": "unavailable",
+      "benchmark_status": "unavailable",
+      "limitations": [
+        "Machine-readable adapter metadata is unavailable."
+      ]
+    },
+    {
+      "model_id": "mobilenetv2-plant-pth",
+      "adapter_type": "pytorch",
+      "status": "unavailable",
+      "source_dataset": "unknown",
+      "supported_crops": [],
+      "calibration_status": "unavailable",
+      "abstention_status": "unavailable",
+      "benchmark_status": "unavailable",
+      "limitations": [
+        "Framework, preprocessing, output mapping, and checkpoint metadata are unverified."
+      ]
+    }
+  ]
+}

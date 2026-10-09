@@ -174,6 +174,35 @@ Run adapter tests with:
 .\.venv\Scripts\python.exe -m unittest tests.test_model_adapters -v
 ```
 
+## Inference router (Step 9)
+
+The routing layer is implemented in
+`scripts/inference_router.py` and configured by
+`data/model_capabilities.json`. It is intentionally separate from
+`app/main.py`; the existing public `/predict` endpoint is unchanged.
+
+Routing flow:
+
+1. Reject empty input.
+2. Select only capability entries marked `ready`.
+3. Filter by an explicitly supplied crop when available.
+4. Use stable `model_id` ordering as the documented tie-breaker because
+   benchmark metrics are currently unavailable.
+5. Reuse a cached Step 8 adapter.
+6. Propagate raw scores, calibration status, abstention, image-quality warnings,
+   canonical mapping, and inference duration.
+7. Return an explicit unavailable or uncertain response on failure.
+
+The current registry marks the ONNX PlantVillage adapter as ready, the Keras
+checkpoint as `requires_review`, and the MobileNet checkpoint as unavailable.
+No models are combined, and no unsupported crop or class is silently mapped.
+
+Run router tests with:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest tests.test_inference_router -v
+```
+
 ## Confidence calibration and uncertainty (Step 7)
 
 Calibration is implemented separately from production inference and uses
