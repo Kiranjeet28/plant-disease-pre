@@ -78,3 +78,30 @@ when errors prevent safe use. Lookup helpers are available from
 verified PlantVillage labels already present in `app/labels.json`. PlantDoc
 has no local class labels in this checkout, so it remains documented as
 unresolved and is not fabricated into the registry.
+
+## Safe dataset splits (Step 4)
+
+Create reference-only manifests without copying or modifying source images:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\create_dataset_splits.py `
+  --plantvillage-root 'D:\datasets\PlantVillage' `
+  --plantdoc-root 'D:\datasets\PlantDoc' `
+  --output-dir .\data\manifests `
+  --report-dir .\reports `
+  --seed 20261009 `
+  --train-ratio 0.70 `
+  --validation-ratio 0.15
+```
+
+Validate generated artifacts:
+
+```powershell
+.\.venv\Scripts\python.exe -c "from pathlib import Path; from scripts.create_dataset_splits import validate_manifest; import sys; e,w=validate_manifest(Path('data/manifests/split_manifest.csv'), Path('data/manifests/split_metadata.json'), Path('reports/data_leakage_report.json')); print({'errors':e,'warnings':w}); sys.exit(2 if e else 0)"
+```
+
+The splitter excludes unresolved labels and corrupt images into
+`data/manifests/excluded_samples.csv`, keeps SHA-256 duplicate groups in one
+partition, reports perceptual-hash candidates, and records unavailable dataset
+roots explicitly. It does not replace official dataset splits or create model
+training data.

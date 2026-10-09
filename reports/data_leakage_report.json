@@ -1,0 +1,7 @@
+{
+  "critical": false,
+  "exact_duplicate_cross_partition": {},
+  "group_cross_partition": {},
+  "potential_near_duplicate_cross_partition": {},
+  "sample_id_cross_partition": {}
+}

@@ -1,0 +1,32 @@
+{
+  "split_schema_version": 1,
+  "configuration": {
+    "seed": 20261009,
+    "train_ratio": 0.7,
+    "validation_ratio": 0.15,
+    "test_ratio": 0.15000000000000005,
+    "unresolved_policy": "exclude",
+    "grouping": "sha256 exact-content groups; no invented identifiers",
+    "registry": "C:\\Users\\Dell\\OneDrive\\Desktop\\working\\modle\\data\\label_registry.csv"
+  },
+  "datasets": [
+    {
+      "status": "not_available",
+      "root": "__missing_dataset_root__",
+      "discovered_images": 0,
+      "error": "dataset root does not exist",
+      "dataset": "PlantVillage"
+    },
+    {
+      "status": "not_available",
+      "root": "__missing_dataset_root__",
+      "discovered_images": 0,
+      "error": "dataset root does not exist",
+      "dataset": "PlantDoc"
+    }
+  ],
+  "eligible_samples": 0,
+  "excluded_samples": 0,
+  "limitations": [],
+  "source_images_modified": false
+}
