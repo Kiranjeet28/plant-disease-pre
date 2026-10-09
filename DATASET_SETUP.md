@@ -105,3 +105,24 @@ The splitter excludes unresolved labels and corrupt images into
 partition, reports perceptual-hash candidates, and records unavailable dataset
 roots explicitly. It does not replace official dataset splits or create model
 training data.
+
+## Candidate model training (Step 5)
+
+Training consumes the verified Step 4 manifest and never creates a new split.
+It is intentionally blocked when the manifest has no eligible samples:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\train_models.py `
+  --manifest .\data\manifests\split_manifest.csv `
+  --split-metadata .\data\manifests\split_metadata.json `
+  --architecture small_cnn `
+  --epochs 10 `
+  --batch-size 32 `
+  --output-dir .\experiments
+```
+
+Available architectures are `small_cnn` and `efficientnet_b0`. The latter can
+request verified Keras ImageNet weights with `--pretrained`; this may download
+weights and should not be used until the dataset prerequisite is available.
+The current checkout has zero eligible samples, so no training run or metrics
+were produced. The existing ONNX production model remains untouched.
