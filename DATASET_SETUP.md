@@ -41,3 +41,23 @@ Run the utility tests with:
 ```powershell
 .\.venv\Scripts\python.exe -m unittest discover -s tests -p "test_*.py" -v
 ```
+
+## Dataset audit (Step 2)
+
+The audit is read-only with respect to source datasets. It does not download
+PlantVillage or PlantDoc, create splits, or remap labels. Supply local roots
+only when the original datasets have been downloaded outside Git:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\audit_datasets.py `
+  --plantvillage-root 'D:\datasets\PlantVillage' `
+  --plantdoc-root 'D:\datasets\PlantDoc' `
+  --output-dir .\reports\dataset_audit
+```
+
+If a root is omitted or does not exist, the report records that dataset as
+`not_available`; it does not fabricate local counts. Reports include JSON and
+CSV summaries, image integrity issues, SHA-256 duplicate groups, and
+conservative average-hash candidates that require manual review. PlantDoc
+classification folders and object-detection annotations are reported
+separately and must not be treated as interchangeable.

@@ -1,0 +1,37 @@
+{
+  "dataset_name": "PlantDoc",
+  "source_metadata": {
+    "source": "https://github.com/pratikkayal/PlantDoc-Dataset",
+    "source_revision": "5467f6012d78d1c446145d5f582da6096f852ae8",
+    "license": "CC BY 4.0",
+    "task": "cropped image classification",
+    "upstream_total_reported": 2598,
+    "upstream_species_reported": 13,
+    "upstream_diseases_reported": 17,
+    "object_detection_repository": "https://github.com/pratikkayal/PlantDoc-Object-Detection-Dataset",
+    "features": [
+      "image files; classification labels are directory-derived"
+    ]
+  },
+  "local_root": null,
+  "status": "not_available",
+  "total_images": 0,
+  "class_counts": {},
+  "crop_species": [],
+  "disease_labels": [],
+  "healthy_labels": [],
+  "file_formats": {},
+  "image_dimensions": {},
+  "integrity_issues": [],
+  "exact_duplicate_groups": [],
+  "potential_near_duplicate_groups": [],
+  "label_annotation_inconsistencies": [],
+  "folder_structure": {},
+  "metadata_schema": {
+    "classification_labels": "top-level directory name",
+    "annotation_files": {}
+  },
+  "unresolved_questions": [
+    "Download or provide a local dataset root before local counts can be audited."
+  ]
+}
