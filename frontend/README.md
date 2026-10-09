@@ -48,7 +48,9 @@ npm run build
 ```
 
 The current backend router has two verified PlantVillage EfficientNet adapters
-(ONNX and Keras), with ONNX configured as the higher-priority production
-model. The MobileNet checkpoint uses its verified MobileNetV2 architecture and
-ImageNet preprocessing. It can still return an unavailable result when the
-PyTorch runtime is missing or the checkpoint fails strict validation.
+(ONNX and Keras) plus a converted MobileNetV2 ONNX adapter. The EfficientNet
+ONNX model remains the higher-priority production model. The original
+MobileNet `.pth` file is retained as the source checkpoint, while
+`model/mobilenetv2_plant.onnx` is used for faster runtime loading. The
+dashboard may return an unavailable result for unsupported crops or
+missing/incompatible artifacts.

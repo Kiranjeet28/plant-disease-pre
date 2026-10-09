@@ -130,9 +130,19 @@ Run the repeatable model readiness diagnostic with an optional image probe:
 
 The current diagnostic verifies real inference for the ONNX and Keras
 EfficientNet checkpoints. The MobileNet checkpoint remains unavailable because
-PyTorch is not installed in this environment and its architecture,
-preprocessing, output mapping, and class metadata are not documented. The
-diagnostic does not change checkpoint files.
+the original PyTorch source is retained separately while the converted
+`model/mobilenetv2_plant.onnx` artifact is used for fast inference. The
+conversion report records PyTorch/ONNX output equivalence and the diagnostic
+does not modify the original `.pth` checkpoint.
+
+Convert or regenerate the MobileNet ONNX artifact with:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\convert_mobilenet_to_onnx.py
+```
+
+The converter validates the ONNX graph and compares its logits with the
+PyTorch model on the same preprocessed input before writing the report.
 
 ## Safe dataset splits (Step 4)
 

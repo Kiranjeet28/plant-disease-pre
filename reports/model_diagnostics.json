@@ -77,6 +77,7 @@
           "Tomato___Tomato_mosaic_virus",
           "Tomato___healthy"
         ],
+        "input_layout": "NHWC",
         "calibration_artifact": "C:\\Users\\Dell\\OneDrive\\Desktop\\working\\modle\\reports\\calibration\\production_onnx.json",
         "artifact_sha256": "4276b354bedc7e6adf08a4ac2f9b52093ce155b52645eb58951a3771bac1cdeb"
       },
@@ -162,6 +163,7 @@
           "Tomato___Tomato_mosaic_virus",
           "Tomato___healthy"
         ],
+        "input_layout": "NHWC",
         "calibration_artifact": null,
         "artifact_sha256": "24573478ea38cfbc1aa2e0d5495f746062a9c94e49adc4677d1a8a3d52d88f49"
       },
@@ -174,6 +176,36 @@
     {
       "model_id": "mobilenetv2-plant-pth",
       "adapter_type": "pytorch",
+      "configured_status": "unavailable",
+      "supported_crops": [
+        "Apple",
+        "Blueberry",
+        "Cherry (including sour)",
+        "Corn (maize)",
+        "Grape",
+        "Orange",
+        "Peach",
+        "Pepper bell",
+        "Potato",
+        "Raspberry",
+        "Soybean",
+        "Squash",
+        "Strawberry",
+        "Tomato"
+      ],
+      "checkpoint_available": null,
+      "adapter_initialized": false,
+      "metadata": null,
+      "inference": null,
+      "readiness": "unavailable",
+      "reasons": [
+        "Retained as the source checkpoint; the converted ONNX artifact is used for fast inference.",
+        "Configured unavailable; adapter initialization was not attempted."
+      ]
+    },
+    {
+      "model_id": "mobilenetv2-plant-onnx",
+      "adapter_type": "onnx",
       "configured_status": "ready",
       "supported_crops": [
         "Apple",
@@ -194,9 +226,9 @@
       "checkpoint_available": true,
       "adapter_initialized": true,
       "metadata": {
-        "model_id": "mobilenetv2-plant-pth",
+        "model_id": "mobilenetv2-plant-onnx",
         "architecture": "MobileNetV2",
-        "checkpoint": "C:\\Users\\Dell\\OneDrive\\Desktop\\working\\modle\\model\\mobilenetv2_plant.pth",
+        "checkpoint": "C:\\Users\\Dell\\OneDrive\\Desktop\\working\\modle\\model\\mobilenetv2_plant.onnx",
         "input_size": [
           224,
           224
@@ -246,14 +278,15 @@
           "Tomato___Tomato_mosaic_virus",
           "Tomato___healthy"
         ],
+        "input_layout": "NCHW",
         "calibration_artifact": null,
-        "artifact_sha256": "26c97b05ef2caf58bce6f901c725926546a887ee50f0a637a363b644ec17f96e"
+        "artifact_sha256": "250ad0310cac0da28dc009a5b0cc4d9c9ae395a525fe9e90ee0e6207a65dd96f"
       },
       "inference": null,
       "readiness": "ready",
       "reasons": [
-        "No compatible validation-derived calibration artifact is available.",
-        "Model output is converted from verified logits to uncalibrated probabilities."
+        "Converted from the verified PyTorch checkpoint; output equivalence was validated.",
+        "Model output is logits; probabilities are uncalibrated softmax values."
       ]
     }
   ]

@@ -14,6 +14,7 @@ from scripts.model_adapters import (
     StandardizedPrediction,
     OnnxModelAdapter,
     KerasModelAdapter,
+    mobilenetv2_onnx_config,
     PytorchMobileNetV2Adapter,
 )
 from scripts.label_registry import load_registry
@@ -180,6 +181,8 @@ class InferenceRouter:
             return KerasModelAdapter()
         if model_id == "mobilenetv2-plant-pth":
             return PytorchMobileNetV2Adapter()
+        if model_id == "mobilenetv2-plant-onnx":
+            return OnnxModelAdapter(config=mobilenetv2_onnx_config())
         raise AdapterError(f"No verified adapter factory for model {model_id!r}.")
 
     def _eligible(self, crop: str | None) -> list[ModelCapability]:

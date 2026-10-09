@@ -12,6 +12,7 @@ from scripts.model_adapters import (
     AdapterError,
     KerasModelAdapter,
     OnnxModelAdapter,
+    mobilenetv2_onnx_config,
     available_adapters,
     mobilenetv2_pytorch_config,
     production_onnx_config,
@@ -122,6 +123,13 @@ class ModelAdaptersTests(unittest.TestCase):
         self.assertEqual(config.output_type, "logits")
         self.assertEqual(len(config.labels), 38)
         self.assertIn("ImageNet normalization", config.normalization)
+
+    def test_converted_mobilenet_onnx_adapter_runs(self):
+        adapter = OnnxModelAdapter(config=mobilenetv2_onnx_config())
+        result = adapter.predict(image_bytes())
+        self.assertEqual(result.model_id, "mobilenetv2-plant-onnx")
+        self.assertEqual(len(result.raw_scores), 38)
+        self.assertIsNotNone(result.canonical_id)
 
     def test_verified_keras_adapter_loads_and_runs_real_checkpoint(self):
         adapter = KerasModelAdapter()

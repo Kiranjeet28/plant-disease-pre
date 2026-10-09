@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL = ROOT / "model" / "plant_disease.onnx"
 DEFAULT_KERAS_MODEL = ROOT / "model" / "plant_disease_efficientnet.keras"
 DEFAULT_PYTORCH_MODEL = ROOT / "model" / "mobilenetv2_plant.pth"
+DEFAULT_MOBILE_ONNX_MODEL = ROOT / "model" / "mobilenetv2_plant.onnx"
 DEFAULT_CLASS_NAMES = ROOT / "model" / "class_names.txt"
 DEFAULT_LABELS = ROOT / "app" / "labels.json"
 DEFAULT_REGISTRY = ROOT / "data" / "label_registry.csv"
@@ -57,6 +58,7 @@ class AdapterConfig:
     output_type: str
     source_dataset: str
     labels: tuple[str, ...]
+    input_layout: str = "NHWC"
     calibration_artifact: Path | None = None
     abstention_threshold: float | None = None
 
@@ -183,6 +185,22 @@ def mobilenetv2_pytorch_config(
     )
 
 
+def mobilenetv2_onnx_config(
+    checkpoint: Path = DEFAULT_MOBILE_ONNX_MODEL,
+    labels_path: Path = DEFAULT_LABELS,
+) -> AdapterConfig:
+    config = mobilenetv2_pytorch_config(
+        checkpoint=checkpoint, labels_path=labels_path
+    )
+    return AdapterConfig(
+        **{
+            **config.__dict__,
+            "model_id": "mobilenetv2-plant-onnx",
+            "input_layout": "NCHW",
+        }
+    )
+
+
 def validate_config(config: AdapterConfig, registry_entries: list[RegistryEntry]) -> None:
     if not config.checkpoint.is_file():
         raise AdapterError(f"Checkpoint does not exist: {config.checkpoint}")
@@ -206,6 +224,18 @@ def _preprocess(image_bytes: bytes, input_size: tuple[int, int]) -> np.ndarray:
     except (OSError, UnidentifiedImageError, ValueError) as error:
         raise AdapterError(f"Invalid or corrupted input image: {error}") from error
     return np.expand_dims(values, axis=0)
+
+
+def _preprocess_nchw(image_bytes: bytes, input_size: tuple[int, int]) -> np.ndarray:
+    try:
+        with Image.open(io.BytesIO(image_bytes)) as image:
+            image = image.convert("RGB").resize(input_size, Image.Resampling.BILINEAR)
+            values = np.asarray(image, dtype=np.float32) / 255.0
+    except (OSError, UnidentifiedImageError, ValueError) as error:
+        raise AdapterError(f"Invalid or corrupted input image: {error}") from error
+    mean = np.asarray((0.485, 0.456, 0.406), dtype=np.float32)
+    std = np.asarray((0.229, 0.224, 0.225), dtype=np.float32)
+    return np.transpose((values - mean) / std, (2, 0, 1))[np.newaxis, ...]
 
 
 def _file_sha256(path: Path) -> str:
@@ -242,6 +272,7 @@ class ModelAdapter(ABC):
             "output_type": self.config.output_type,
             "source_dataset": self.config.source_dataset,
             "source_labels": list(self.config.labels),
+            "input_layout": self.config.input_layout,
             "calibration_artifact": (
                 str(self.config.calibration_artifact)
                 if self.config.calibration_artifact
@@ -308,7 +339,11 @@ class OnnxModelAdapter(ModelAdapter):
         if len(inputs) != 1 or len(outputs) != 1:
             raise AdapterError("ONNX adapter requires exactly one input and one output.")
         input_shape = inputs[0].shape
-        expected = [None, self.config.input_size[0], self.config.input_size[1], self.config.channels]
+        expected = (
+            [None, self.config.channels, self.config.input_size[0], self.config.input_size[1]]
+            if self.config.input_layout == "NCHW"
+            else [None, self.config.input_size[0], self.config.input_size[1], self.config.channels]
+        )
         if list(input_shape[1:]) != expected[1:]:
             raise AdapterError(f"ONNX input shape {input_shape} does not match {expected}.")
         output_shape = outputs[0].shape
@@ -332,6 +367,8 @@ class OnnxModelAdapter(ModelAdapter):
             self._compatibility_warnings.append("No compatible calibration artifact is available.")
 
     def preprocess(self, image_bytes: bytes) -> np.ndarray:
+        if self.config.input_layout == "NCHW":
+            return _preprocess_nchw(image_bytes, self.config.input_size)
         return _preprocess(image_bytes, self.config.input_size)
 
     def _scores(self, values: np.ndarray) -> np.ndarray:
@@ -541,7 +578,7 @@ class PytorchMobileNetV2Adapter(ModelAdapter):
         return StandardizedPrediction(
             self.config.model_id,
             tuple(raw.tolist()),
-            tuple(probabilities.tolist()),
+            None,
             index,
             source_label,
             entry.canonical_id,
@@ -575,4 +612,5 @@ def available_adapters() -> dict[str, str]:
         "plantvillage-efficientnetb0-onnx": "ready",
         "plantvillage-efficientnetb0-keras": "ready",
         "mobilenetv2-plant-pth": "ready",
+        "mobilenetv2-plant-onnx": "ready",
     }

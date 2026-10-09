@@ -79,7 +79,7 @@ def prediction(**updates):
 class InferenceRouterTests(unittest.TestCase):
     def test_capability_registry_and_deterministic_selection(self):
         capabilities = load_capabilities()
-        self.assertEqual(len(capabilities), 3)
+        self.assertEqual(len(capabilities), 4)
         router = InferenceRouter(capabilities)
         selected, reason = router.select_model("Tomato")
         self.assertEqual(selected.model_id, "plantvillage-efficientnetb0-onnx")
