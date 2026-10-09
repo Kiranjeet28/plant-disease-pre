@@ -1,16 +1,45 @@
-# React + Vite
+# Plant Disease Detection frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+This React/Vite interface sends an explicitly selected JPG, JPEG, or PNG image
+to the backend Step 9 router at `POST /predict/router`. The frontend validates
+the file type and 10 MB size limit for usability; the backend remains
+authoritative and does not permanently store uploaded images.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+From `frontend`:
 
-## React Compiler
+```powershell
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Set `VITE_API_URL` in `.env` when the API is not running at
+`http://127.0.0.1:8000`. Start the backend from the repository root:
 
-## Expanding the Oxlint configuration
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Use **Choose plant image** or drag a file into the upload area. Prediction
+starts only after pressing **Predict disease**. Selecting a replacement image
+clears the previous result, and an in-flight request cannot be submitted twice.
+
+## Results and safety states
+
+The interface displays the router's canonical display label, healthy status,
+confidence only when a prediction is available, calibration status, selected
+model, inference duration, warnings, and abstention reason. Uncalibrated
+scores are explicitly labelled as model scores rather than probabilities.
+`uncertain` and `unavailable` router responses are never rendered as disease
+predictions. Network and server errors expose a retryable message without
+showing stack traces or filesystem paths.
+
+## Checks
+
+```powershell
+npm run lint
+npm run build
+```
+
+The current backend router has one verified ready model and may return an
+unavailable result for unsupported crops or missing/incompatible artifacts.

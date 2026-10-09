@@ -8,6 +8,8 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image, UnidentifiedImageError
 
+from scripts.inference_router import InferenceRouter
+
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_PATH = ROOT / "model" / "plant_disease.onnx"
@@ -22,6 +24,8 @@ session = ort.InferenceSession(
     providers=["CPUExecutionProvider"],
 )
 input_name = session.get_inputs()[0].name
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+router = InferenceRouter()
 
 app = FastAPI(title="Plant Disease Detection API")
 app.add_middleware(
@@ -81,6 +85,8 @@ async def predict_image(file: UploadFile = File(...)):
         image_bytes = await file.read()
         if not image_bytes:
             raise HTTPException(status_code=400, detail="Uploaded file is empty")
+        if len(image_bytes) > MAX_UPLOAD_BYTES:
+            raise HTTPException(status_code=413, detail="Image exceeds the 10 MB upload limit")
         class_index, confidence = predict(image_bytes)
     except HTTPException:
         raise
@@ -92,3 +98,22 @@ async def predict_image(file: UploadFile = File(...)):
         "confidence": round(confidence * 100, 2),
         "class_index": class_index,
     }
+
+
+@app.post("/predict/router")
+async def predict_with_router(
+    file: UploadFile = File(...),
+    crop: str | None = None,
+):
+    """Run the Step 9 safety-preserving router without changing /predict."""
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Missing image file")
+    try:
+        image_bytes = await file.read()
+    except OSError as error:
+        raise HTTPException(status_code=400, detail="Unable to read image file") from error
+    if not image_bytes:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    if len(image_bytes) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="Image exceeds the 10 MB upload limit")
+    return router.predict(image_bytes, crop=crop).to_dict()
