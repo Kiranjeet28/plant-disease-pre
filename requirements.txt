@@ -4,3 +4,5 @@ python-multipart
 pillow
 numpy
 onnxruntime
+torch>=2.2,<3
+torchvision>=0.17,<1

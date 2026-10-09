@@ -104,6 +104,36 @@ display label, and healthy status agree with the canonical registry. A
 synthetic solid-colour image is only an execution fixture; its model output
 must not be interpreted as a validated plant disease or healthy-leaf example.
 
+## Model analysis dashboard
+
+The frontend analysis dashboard uses `POST /analyze` rather than simulating
+multiple models in the browser. The response includes the actual evaluated
+adapter output, score type, top source-label scores, canonical mapping,
+latency, warnings, and explicit exclusion reasons for models that are not
+ready or do not support the requested crop. The current capability registry
+has one ready ONNX model; Keras and PyTorch checkpoints are not presented as
+evaluated predictions.
+
+The current-image score comparison is separate from offline benchmark
+performance. Because the verified test manifest is empty, benchmark values
+are displayed as unavailable rather than fabricated. Start the backend and
+frontend as documented in `frontend/README.md`, then upload an image and select
+**Analyze image**.
+
+Run the repeatable model readiness diagnostic with an optional image probe:
+
+```powershell
+.\.venv\Scripts\python.exe .\scripts\diagnose_models.py `
+  --image 'D:\images\leaf.jpg' `
+  --output .\reports\model_diagnostics.json
+```
+
+The current diagnostic verifies real inference for the ONNX and Keras
+EfficientNet checkpoints. The MobileNet checkpoint remains unavailable because
+PyTorch is not installed in this environment and its architecture,
+preprocessing, output mapping, and class metadata are not documented. The
+diagnostic does not change checkpoint files.
+
 ## Safe dataset splits (Step 4)
 
 Create reference-only manifests without copying or modifying source images:
@@ -180,11 +210,12 @@ The adapter interface is implemented in
 Each source label is checked against the verified PlantVillage canonical
 registry before inference.
 
-The Keras checkpoint is marked `requires_review` because no machine-readable
-adapter configuration and calibration artifact are available. The MobileNet
-PyTorch checkpoint is marked unavailable because its framework, output mapping,
-and preprocessing metadata are not verified. These models are not exposed as
-production-ready.
+The Keras checkpoint is marked `ready` but remains uncalibrated because no
+compatible validation-derived calibration artifact is available. The MobileNet
+PyTorch checkpoint is verified against its published model documentation:
+MobileNetV2, 224×224 RGB input, ImageNet normalization, a 38-class logits head,
+and the exact PlantVillage class order. Its adapter applies softmax once for
+display probabilities and reports the result as uncalibrated.
 
 Adapters return raw scores separately from calibrated probabilities,
 canonical mapping, calibration status, abstention status, image-quality
@@ -219,7 +250,8 @@ Routing flow:
 7. Return an explicit unavailable or uncertain response on failure.
 
 The current registry marks the ONNX PlantVillage adapter as ready, the Keras
-checkpoint as `requires_review`, and the MobileNet checkpoint as unavailable.
+checkpoint as ready but uncalibrated, and the MobileNet checkpoint as ready
+when its PyTorch runtime and strict checkpoint validation succeed.
 No models are combined, and no unsupported crop or class is silently mapped.
 
 Run router tests with:

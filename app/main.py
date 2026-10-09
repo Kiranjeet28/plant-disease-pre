@@ -1,5 +1,6 @@
 import io
 import json
+import uuid
 from pathlib import Path
 
 import numpy as np
@@ -117,3 +118,19 @@ async def predict_with_router(
     if len(image_bytes) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=413, detail="Image exceeds the 10 MB upload limit")
     return router.predict(image_bytes, crop=crop).to_dict()
+
+
+@app.post("/analyze")
+async def analyze_image(
+    file: UploadFile = File(...),
+    crop: str | None = None,
+):
+    """Return genuine per-model diagnostics for the analysis dashboard."""
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Missing image file")
+    image_bytes = await file.read()
+    if not image_bytes:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
+    if len(image_bytes) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="Image exceeds the 10 MB upload limit")
+    return router.analyze(image_bytes, crop=crop, request_id=str(uuid.uuid4())).to_dict()

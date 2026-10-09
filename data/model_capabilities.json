@@ -5,6 +5,7 @@
       "model_id": "plantvillage-efficientnetb0-onnx",
       "adapter_type": "onnx",
       "status": "ready",
+      "priority": 1,
       "checkpoint": "model/plant_disease.onnx",
       "source_dataset": "PlantVillage",
       "supported_crops": [
@@ -34,27 +35,61 @@
     {
       "model_id": "plantvillage-efficientnetb0-keras",
       "adapter_type": "keras",
-      "status": "requires_review",
+      "status": "ready",
+      "priority": 2,
       "source_dataset": "PlantVillage",
-      "supported_crops": [],
+      "supported_crops": [
+        "Apple",
+        "Blueberry",
+        "Cherry (including sour)",
+        "Corn (maize)",
+        "Grape",
+        "Orange",
+        "Peach",
+        "Pepper bell",
+        "Potato",
+        "Raspberry",
+        "Soybean",
+        "Squash",
+        "Strawberry",
+        "Tomato"
+      ],
       "calibration_status": "unavailable",
       "abstention_status": "unavailable",
       "benchmark_status": "unavailable",
       "limitations": [
-        "Machine-readable adapter metadata is unavailable."
+        "No compatible validation-derived calibration artifact is available."
       ]
     },
     {
       "model_id": "mobilenetv2-plant-pth",
       "adapter_type": "pytorch",
-      "status": "unavailable",
-      "source_dataset": "unknown",
-      "supported_crops": [],
+      "status": "ready",
+      "priority": 3,
+      "checkpoint": "model/mobilenetv2_plant.pth",
+      "source_dataset": "PlantVillage",
+      "supported_crops": [
+        "Apple",
+        "Blueberry",
+        "Cherry (including sour)",
+        "Corn (maize)",
+        "Grape",
+        "Orange",
+        "Peach",
+        "Pepper bell",
+        "Potato",
+        "Raspberry",
+        "Soybean",
+        "Squash",
+        "Strawberry",
+        "Tomato"
+      ],
       "calibration_status": "unavailable",
       "abstention_status": "unavailable",
       "benchmark_status": "unavailable",
       "limitations": [
-        "Framework, preprocessing, output mapping, and checkpoint metadata are unverified."
+        "No compatible validation-derived calibration artifact is available.",
+        "Model output is converted from verified logits to uncalibrated probabilities."
       ]
     }
   ]

@@ -171,6 +171,16 @@ class EndToEndIntegrationTests(unittest.TestCase):
             self.assertTrue(entry.canonical_id)
             self.assertTrue(entry.disease)
 
+    def test_analysis_endpoint_returns_per_model_contract(self):
+        response = asyncio.run(main.analyze_image(upload(image_bytes()), None))
+        self.assertTrue(response["request_id"])
+        self.assertIn("image_validation", response)
+        self.assertIn("models", response)
+        self.assertIn("final_decision", response)
+        self.assertIn("benchmark", response)
+        self.assertTrue(any(model["model_id"] == "plantvillage-efficientnetb0-onnx"
+                            for model in response["models"]))
+
 
 if __name__ == "__main__":
     unittest.main()
