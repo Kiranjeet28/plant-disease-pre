@@ -177,24 +177,12 @@ function AnalysisDashboard({ analysis }) {
         <div className="section-heading"><div><p className="eyebrow">MODEL EVIDENCE</p><h2>Individual model analysis</h2></div><span className="muted">{predictions.length} evaluated · {analysis.models.length - predictions.length} not evaluated</span></div>
         <div className="model-grid">{analysis.models.map((model) => <ModelCard key={model.model_id} model={model} />)}</div>
       </section>
-      <section className="dashboard-section">
-        <div className="section-heading"><div><p className="eyebrow">CURRENT IMAGE</p><h2>Top score comparison</h2></div><span className="muted">Scores are not benchmark metrics</span></div>
-        {analysis.comparison?.compatible && predictions.length ? <div className="score-chart">{predictions.map((model) => {
-          const prediction = model.prediction
-          const score = prediction.confidence
-          return <div className="score-row" key={model.model_id}><div className="score-label"><strong>{model.model_id}</strong><span>{prediction.display_label || prediction.source_label}</span></div><div className="bar-track"><span style={{ width: `${Math.max(0, Math.min(1, score || 0)) * 100}%` }} /></div><b>{score === null ? 'N/A' : `${Math.round(score * 100)}%`}</b></div>
-        })}</div> : <p className="empty-result">{analysis.comparison?.reason || 'No comparable prediction scores are available.'}</p>}
-        {analysis.comparison?.compatible && <p className="notice">Top predictions {analysis.comparison.top_prediction_matches ? 'match' : 'differ'} across these verified probability outputs. Maximum class-score difference: {Number(analysis.comparison.max_absolute_score_difference).toExponential(2)}.</p>}
-      </section>
+     
       <section className="dashboard-section">
         <div className="section-heading"><div><p className="eyebrow">DECISION TRACE</p><h2>How the router decided</h2></div><button className="small-button" type="button" onClick={() => setShowDecision(!showDecision)}>{showDecision ? 'Collapse' : 'Expand'}</button></div>
         {showDecision && <DecisionTrace analysis={analysis} />}
       </section>
-      <section className="dashboard-section offline-section">
-        <div className="section-heading"><div><p className="eyebrow">OFFLINE EVALUATION</p><h2>Benchmark performance</h2></div><span className="muted">Separate from this image</span></div>
-        <p className="notice">{analysis.benchmark.reason || 'No benchmark report is available.'}</p>
-        <div className="metric-grid"><Metric label="Accuracy" value="Not available" /><Metric label="Macro-F1" value="Not available" /><Metric label="Weighted-F1" value="Not available" /></div>
-      </section>
+     
     </div>
   )
 }
